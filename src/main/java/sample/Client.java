@@ -7,8 +7,8 @@ import java.time.LocalDateTime;
 
 public class Client {
 
-//    private static final String K8S_SERVICE = "server";
-private static final String K8S_SERVICE = "localhost";
+    private static final String K8S_SERVICE = "server";
+//  private static final String K8S_SERVICE = "localhost";
 
     public static void main(String ... args) throws IOException {
         new Client().run();
