@@ -16,7 +16,7 @@ public class Client {
 
     private void run() throws IOException {
         Socket s = new Socket();
-        s.setSoTimeout(30000);
+//        s.setSoTimeout(30000);
         s.connect(new InetSocketAddress(K8S_SERVICE, 8080), 10000);
         while (true) {
             sendRequest(s);
