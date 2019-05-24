@@ -7,20 +7,20 @@ import java.time.LocalDateTime;
 
 public class Client {
 
-    private static final String K8S_SERVICE = "server";
+//    private static final String K8S_SERVICE = "server";
+private static final String K8S_SERVICE = "localhost";
 
     public static void main(String ... args) throws IOException {
         new Client().run();
     }
 
     private void run() throws IOException {
+        Socket s = new Socket();
+        s.setSoTimeout(30000);
+        s.connect(new InetSocketAddress(K8S_SERVICE, 8080), 10000);
         while (true) {
-            try (Socket s = new Socket()) {
-                s.setSoTimeout(10000);
-                s.connect(new InetSocketAddress(K8S_SERVICE, 8080), 10000);
-                sendRequest(s);
-                handleResponse(s);
-            }
+            sendRequest(s);
+            handleResponse(s);
             sleep(1000);
         }
     }

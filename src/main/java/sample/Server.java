@@ -27,23 +27,26 @@ public class Server {
     }
 
     private void handleRequest(Socket socket) {
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
-            String msg = reader.readLine();
-            if ("echo".equals(msg)) {
-                sendResponse(socket);
+        System.out.println(LocalDateTime.now() + " accept from " + socket.getInetAddress());
+        while (!socket.isClosed()) {
+            try {
+                BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                String msg = reader.readLine();
+                if ("echo".equals(msg)) {
+                    sendResponse(socket);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
+        System.out.println(LocalDateTime.now() + " socket closed: " + socket.getInetAddress());
     }
 
-    private void sendResponse(Socket socket) {
-        try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()))) {
-            writer.write("echo: " + InetAddress.getLocalHost().getHostName());
-            writer.flush();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    private void sendResponse(Socket socket) throws IOException {
+        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+        writer.write("echo: " + InetAddress.getLocalHost().getHostName());
+        writer.newLine();
+        writer.flush();
         System.out.println(LocalDateTime.now() + " send response to " + socket.getInetAddress());
     }
 }
